@@ -3,14 +3,12 @@
 $name = htmlspecialchars($_POST['name']);
 $message = htmlspecialchars($_POST['message']);
 
-$ctx = new ZMQContext();
-
-$send = $ctx->getSocket(ZMQ::SOCKET_PUSH);
-$send->connect('tcp://localhost:8000');
-
-if ('m:joined' == $message) {
-    $send->send("<em>$name has joined</em>");
+$context = new ZMQContext();
+$send = new ZMQSocket($context, ZMQ::SOCKET_PUSH);
+$send->connect('tcp://localhost:5567');
+if($message == 'm:joined') {
+    $send->send('<em>' . $name . '</em> has <span class="label label-info">joined</span></em>');
 } else {
-    $send->send("$name: $message");
+    $send->send('<strong>' . $name . '</strong>: ' . $message);
 }
-exit;
+exit();

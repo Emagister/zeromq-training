@@ -1,0 +1,5 @@
+#chat {display: none;}
+#chatwindow {height:400px;overflow: scroll;background: white;}
+#chatwindow p {margin:0px 5px;}
+#chatbox {width: 1079px;}
+#datasrc {display: none;}

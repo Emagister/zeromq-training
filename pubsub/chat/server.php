@@ -1,17 +1,15 @@
 <?php
 
 $ctx = new ZMQContext();
-
 $pub = $ctx->getSocket(ZMQ::SOCKET_PUB);
-$pub->bind('tcp://*:8001');
-
+$pub->setSockOpt(ZMQ::SOCKOPT_HWM, 20);
+$pub->bind('tcp://*:5566');
 $pull = $ctx->getSocket(ZMQ::SOCKET_PULL);
-$pull->bind('tcp://*:8000');
+$pull->setSockOpt(ZMQ::SOCKOPT_HWM, 20);
+$pull->bind('tcp://*:5567');
 
-echo "Starting chat server ..." . PHP_EOL;
-
-while (true) {
-    $event = $pull->recv();
-    echo 'Received "' . $event . '"' . PHP_EOL;
-    $pub->send($event);
+while(true) {
+    $message = $pull->recv();
+    echo "Got ", $message, PHP_EOL;
+    $pub->send($message);
 }
